@@ -1,0 +1,20 @@
+{
+  "/(dashboard)/admin/units/page": "/admin/units",
+  "/(dashboard)/admin/users/page": "/admin/users",
+  "/(dashboard)/analytics/page": "/analytics",
+  "/(dashboard)/billing/page": "/billing",
+  "/(dashboard)/customers/page": "/customers",
+  "/(dashboard)/dashboard/page": "/dashboard",
+  "/(dashboard)/financial/page": "/financial",
+  "/(dashboard)/inventory/page": "/inventory",
+  "/(dashboard)/queue/page": "/queue",
+  "/(dashboard)/reseller/page": "/reseller",
+  "/(dashboard)/service-orders/page": "/service-orders",
+  "/(dashboard)/services/page": "/services",
+  "/(dashboard)/settings/page": "/settings",
+  "/(dashboard)/vehicles/page": "/vehicles",
+  "/(dashboard)/workflows/page": "/workflows",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/page": "/"
+}

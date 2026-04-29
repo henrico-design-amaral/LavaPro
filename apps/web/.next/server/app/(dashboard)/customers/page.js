@@ -1,0 +1,13 @@
+var R=require("../../../chunks/ssr/[turbopack]_runtime.js")("server/app/(dashboard)/customers/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0mukrgb._.js")
+R.c("server/chunks/ssr/0wml_next_dist_esm_build_templates_app-page_05i94da.js")
+R.c("server/chunks/ssr/[root-of-the-server]__10lwnnv._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0pj-7nh._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0~zo_uf._.js")
+R.c("server/chunks/ssr/0wml_next_dist_client_components_0ulqp-8._.js")
+R.c("server/chunks/ssr/0wml_next_dist_client_components_builtin_forbidden_0oa_ppl.js")
+R.c("server/chunks/ssr/0wml_next_dist_client_components_builtin_unauthorized_0gc0hsd.js")
+R.c("server/chunks/ssr/0wml_next_dist_client_components_builtin_global-error_10rekuq.js")
+R.c("server/chunks/ssr/0.wp_apps_web__next-internal_server_app_(dashboard)_customers_page_actions_05teonw.js")
+R.m(57050)
+module.exports=R.m(57050).exports

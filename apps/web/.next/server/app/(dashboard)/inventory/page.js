@@ -1,0 +1,13 @@
+var R=require("../../../chunks/ssr/[turbopack]_runtime.js")("server/app/(dashboard)/inventory/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__12~ln5s._.js")
+R.c("server/chunks/ssr/0wml_next_dist_esm_build_templates_app-page_0s2c0sw.js")
+R.c("server/chunks/ssr/[root-of-the-server]__10lwnnv._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0pj-7nh._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0~zo_uf._.js")
+R.c("server/chunks/ssr/0wml_next_dist_client_components_0ulqp-8._.js")
+R.c("server/chunks/ssr/0wml_next_dist_client_components_builtin_forbidden_0oa_ppl.js")
+R.c("server/chunks/ssr/0wml_next_dist_client_components_builtin_unauthorized_0gc0hsd.js")
+R.c("server/chunks/ssr/0wml_next_dist_client_components_builtin_global-error_10rekuq.js")
+R.c("server/chunks/ssr/0.wp_apps_web__next-internal_server_app_(dashboard)_inventory_page_actions_0khst5y.js")
+R.m(12249)
+module.exports=R.m(12249).exports

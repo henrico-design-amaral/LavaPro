@@ -120,43 +120,270 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.OrganizationScalarFieldEnum = {
+exports.Prisma.ResellerScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  regionalScope: 'regionalScope',
+  whiteLabelBranding: 'whiteLabelBranding',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.VehicleScalarFieldEnum = {
+exports.Prisma.OrganizationScalarFieldEnum = {
   id: 'id',
-  size: 'size'
+  resellerId: 'resellerId',
+  name: 'name',
+  documentNumber: 'documentNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  emailVerified: 'emailVerified',
+  image: 'image',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MembershipScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  organizationId: 'organizationId',
+  unitId: 'unitId',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UnitScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  address: 'address',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WashBayScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  unitId: 'unitId',
+  name: 'name',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.ServiceOrderScalarFieldEnum = {
   id: 'id',
-  serviceTypeId: 'serviceTypeId',
+  organizationId: 'organizationId',
+  unitId: 'unitId',
+  washBayId: 'washBayId',
+  customerId: 'customerId',
   vehicleId: 'vehicleId',
+  workflowId: 'workflowId',
+  currentStepId: 'currentStepId',
   status: 'status',
-  organizationId: 'organizationId'
+  scheduledFor: 'scheduledFor',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CustomerScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  document: 'document',
+  phone: 'phone',
+  email: 'email',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VehicleScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  customerId: 'customerId',
+  plate: 'plate',
+  model: 'model',
+  brand: 'brand',
+  color: 'color',
+  size: 'size',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ServiceTypeScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  workflowId: 'workflowId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ServiceBundleScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  price: 'price',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ServiceOrderItemScalarFieldEnum = {
+  id: 'id',
+  serviceOrderId: 'serviceOrderId',
+  serviceTypeId: 'serviceTypeId',
+  price: 'price',
+  quantity: 'quantity'
+};
+
+exports.Prisma.WorkflowScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WorkflowStepScalarFieldEnum = {
+  id: 'id',
+  workflowId: 'workflowId',
+  name: 'name',
+  description: 'description',
+  orderIndex: 'orderIndex',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WorkflowTransitionScalarFieldEnum = {
+  id: 'id',
+  workflowId: 'workflowId',
+  fromStepId: 'fromStepId',
+  toStepId: 'toStepId'
 };
 
 exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
-  currentStock: 'currentStock'
+  organizationId: 'organizationId',
+  name: 'name',
+  sku: 'sku',
+  unitOfMeasure: 'unitOfMeasure',
+  currentStock: 'currentStock',
+  minimumStock: 'minimumStock',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.ServiceProductUsageScalarFieldEnum = {
   id: 'id',
+  organizationId: 'organizationId',
   serviceTypeId: 'serviceTypeId',
   productId: 'productId',
   vehicleSize: 'vehicleSize',
   estimatedQuantity: 'estimatedQuantity',
-  wasteFactor: 'wasteFactor'
+  wasteFactor: 'wasteFactor',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.StockMovementScalarFieldEnum = {
   id: 'id',
+  organizationId: 'organizationId',
   productId: 'productId',
+  type: 'type',
   quantity: 'quantity',
-  type: 'type'
+  serviceOrderId: 'serviceOrderId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PlanScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  currency: 'currency',
+  interval: 'interval',
+  stripePriceId: 'stripePriceId',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SubscriptionScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  planId: 'planId',
+  status: 'status',
+  currentPeriodStart: 'currentPeriodStart',
+  currentPeriodEnd: 'currentPeriodEnd',
+  cancelAtPeriodEnd: 'cancelAtPeriodEnd',
+  stripeSubscriptionId: 'stripeSubscriptionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InvoiceScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  subscriptionId: 'subscriptionId',
+  amount: 'amount',
+  currency: 'currency',
+  status: 'status',
+  pdfUrl: 'pdfUrl',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FeatureFlagScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  name: 'name',
+  description: 'description',
+  isGlobal: 'isGlobal',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OrganizationFeatureScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  featureId: 'featureId',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UsageMetricScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  unitId: 'unitId',
+  key: 'key',
+  value: 'value',
+  measuredAt: 'measuredAt',
+  metadata: 'metadata'
+};
+
+exports.Prisma.CommissionPolicyScalarFieldEnum = {
+  id: 'id',
+  resellerId: 'resellerId',
+  name: 'name',
+  commissionRate: 'commissionRate',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -164,19 +391,117 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+exports.Role = exports.$Enums.Role = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MANAGER: 'MANAGER',
+  TECHNICIAN: 'TECHNICIAN',
+  FINANCIAL: 'FINANCIAL',
+  VIEWER: 'VIEWER'
+};
+
+exports.ServiceOrderStatus = exports.$Enums.ServiceOrderStatus = {
+  SCHEDULED: 'SCHEDULED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.VehicleSize = exports.$Enums.VehicleSize = {
+  COMPACT: 'COMPACT',
+  SEDAN: 'SEDAN',
+  SUV: 'SUV',
+  PICKUP: 'PICKUP',
+  VAN: 'VAN',
+  UTILITY_LIGHT: 'UTILITY_LIGHT'
+};
+
+exports.StockMovementType = exports.$Enums.StockMovementType = {
+  IN: 'IN',
+  OUT: 'OUT',
+  AUTO_CONSUMPTION: 'AUTO_CONSUMPTION',
+  ADJUSTMENT: 'ADJUSTMENT'
+};
+
+exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  PAST_DUE: 'PAST_DUE',
+  CANCELED: 'CANCELED',
+  TRIALING: 'TRIALING'
+};
+
+exports.InvoiceStatus = exports.$Enums.InvoiceStatus = {
+  OPEN: 'OPEN',
+  PAID: 'PAID',
+  VOID: 'VOID',
+  UNCOLLECTIBLE: 'UNCOLLECTIBLE'
+};
+
+exports.FeatureFlagKey = exports.$Enums.FeatureFlagKey = {
+  SMART_STOCK: 'SMART_STOCK',
+  ADVANCED_ANALYTICS: 'ADVANCED_ANALYTICS',
+  MULTI_UNIT: 'MULTI_UNIT',
+  WHITE_LABEL: 'WHITE_LABEL',
+  PUBLIC_API: 'PUBLIC_API',
+  WORKFLOW_ENGINE: 'WORKFLOW_ENGINE'
+};
+
+exports.MetricKey = exports.$Enums.MetricKey = {
+  CHEMICAL_COST_PER_SERVICE: 'CHEMICAL_COST_PER_SERVICE',
+  PROFIT_PER_SERVICE: 'PROFIT_PER_SERVICE',
+  EMPLOYEE_EFFICIENCY_SCORE: 'EMPLOYEE_EFFICIENCY_SCORE',
+  WASH_BAY_THROUGHPUT: 'WASH_BAY_THROUGHPUT',
+  AVG_SERVICE_DURATION: 'AVG_SERVICE_DURATION',
+  STOCK_DEPLETION_FORECAST: 'STOCK_DEPLETION_FORECAST',
+  CUSTOMER_RETENTION_INDEX: 'CUSTOMER_RETENTION_INDEX'
+};
 
 exports.Prisma.ModelName = {
+  Reseller: 'Reseller',
   Organization: 'Organization',
-  Vehicle: 'Vehicle',
+  User: 'User',
+  Membership: 'Membership',
+  Unit: 'Unit',
+  WashBay: 'WashBay',
   ServiceOrder: 'ServiceOrder',
+  Customer: 'Customer',
+  Vehicle: 'Vehicle',
+  ServiceType: 'ServiceType',
+  ServiceBundle: 'ServiceBundle',
+  ServiceOrderItem: 'ServiceOrderItem',
+  Workflow: 'Workflow',
+  WorkflowStep: 'WorkflowStep',
+  WorkflowTransition: 'WorkflowTransition',
   Product: 'Product',
   ServiceProductUsage: 'ServiceProductUsage',
-  StockMovement: 'StockMovement'
+  StockMovement: 'StockMovement',
+  Plan: 'Plan',
+  Subscription: 'Subscription',
+  Invoice: 'Invoice',
+  FeatureFlag: 'FeatureFlag',
+  OrganizationFeature: 'OrganizationFeature',
+  UsageMetric: 'UsageMetric',
+  CommissionPolicy: 'CommissionPolicy'
 };
 
 /**

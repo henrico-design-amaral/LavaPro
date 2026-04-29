@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/client"
@@ -5,43 +8,606 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  schemas  = ["public", "tenant"] // Support schema-per-tenant isolation later
 }
 
+// -----------------------------------------------------------------------------
+// CORE DOMAIN: Multi-tenancy & Identity
+// -----------------------------------------------------------------------------
+
+/// Reseller acts as a master-tenant or partner that manages multiple Organizations.
+model Reseller {
+  id                 String   @id @default(cuid())
+  name               String
+  regionalScope      String? // e.g. "São Paulo", "North America"
+  whiteLabelBranding Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  organizations      Organization[]
+  commissionPolicies CommissionPolicy[]
+
+  @@schema("public")
+}
+
+/// Organization is the primary tenant.
 model Organization {
-  id   String @id @default(cuid())
-  name String
+  id             String   @id @default(cuid())
+  resellerId     String?
+  name           String
+  documentNumber String? // CNPJ or similar
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  reseller Reseller? @relation(fields: [resellerId], references: [id])
+  units    Unit[]
+
+  // Identity & RBAC
+  memberships Membership[]
+
+  // SaaS Domain
+  subscription Subscription?
+  invoices     Invoice[]
+  features     OrganizationFeature[]
+
+  // Inverse relations for operational domain
+  serviceOrders  ServiceOrder[]
+  customers      Customer[]
+  vehicles       Vehicle[]
+  serviceTypes   ServiceType[]
+  serviceBundles ServiceBundle[]
+  workflows      Workflow[]
+
+  // SmartStock domain
+  products       Product[]
+  stockMovements StockMovement[]
+  productUsages  ServiceProductUsage[]
+
+  // Analytics domain
+  usageMetrics UsageMetric[]
+
+  @@schema("public")
+}
+
+/// User represents an authenticatable entity for Auth.js.
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  memberships Membership[]
+
+  @@schema("public")
+}
+
+model Membership {
+  id             String   @id @default(cuid())
+  userId         String
+  organizationId String
+  unitId         String? // A user might be constrained to a single unit
+  role           Role     @default(VIEWER)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  unit         Unit?        @relation(fields: [unitId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId, unitId])
+  @@index([userId])
+  @@index([organizationId])
+  @@schema("public")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MANAGER
+  TECHNICIAN
+  FINANCIAL
+  VIEWER
+
+  @@schema("public")
+}
+
+// -----------------------------------------------------------------------------
+// OPERATIONAL DOMAIN: Facilities & Structure
+// -----------------------------------------------------------------------------
+
+/// Unit represents a physical store or franchise location.
+model Unit {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  address        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization  Organization   @relation(fields: [organizationId], references: [id])
+  washBays      WashBay[]
+  serviceOrders ServiceOrder[]
+  memberships   Membership[]
+  usageMetrics  UsageMetric[]
+
+  @@index([organizationId])
+  @@schema("tenant")
+}
+
+/// WashBay is a specific work area within a Unit.
+model WashBay {
+  id             String   @id @default(cuid())
+  organizationId String
+  unitId         String
+  name           String // e.g., "Bay 1", "Detailing Room"
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  unit          Unit           @relation(fields: [unitId], references: [id])
+  serviceOrders ServiceOrder[]
+
+  @@index([organizationId])
+  @@index([unitId])
+  @@schema("tenant")
+}
+
+// -----------------------------------------------------------------------------
+// SERVICE DOMAIN: Operations & Delivery
+// -----------------------------------------------------------------------------
+
+/// ServiceOrder represents a scheduled or ongoing job.
+model ServiceOrder {
+  id             String             @id @default(cuid())
+  organizationId String
+  unitId         String
+  washBayId      String?
+  customerId     String?
+  vehicleId      String?
+  workflowId     String?
+  currentStepId  String?
+  status         ServiceOrderStatus @default(SCHEDULED)
+  scheduledFor   DateTime?
+  startedAt      DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  organization   Organization       @relation(fields: [organizationId], references: [id])
+  unit           Unit               @relation(fields: [unitId], references: [id])
+  washBay        WashBay?           @relation(fields: [washBayId], references: [id])
+  customer       Customer?          @relation(fields: [customerId], references: [id])
+  vehicle        Vehicle?           @relation(fields: [vehicleId], references: [id])
+  workflow       Workflow?          @relation(fields: [workflowId], references: [id])
+  currentStep    WorkflowStep?      @relation("CurrentStep", fields: [currentStepId], references: [id])
+  items          ServiceOrderItem[]
+  stockMovements StockMovement[]
+
+  @@index([organizationId])
+  @@index([unitId])
+  @@index([washBayId])
+  @@index([customerId])
+  @@index([vehicleId])
+  @@index([workflowId])
+  @@index([currentStepId])
+  @@schema("tenant")
+}
+
+// -----------------------------------------------------------------------------
+// WORKFLOW & CUSTOMER DOMAIN
+// -----------------------------------------------------------------------------
+
+enum VehicleSize {
+  COMPACT
+  SEDAN
+  SUV
+  PICKUP
+  VAN
+  UTILITY_LIGHT
+
+  @@schema("tenant")
+}
+
+model Customer {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  document       String?
+  phone          String?
+  email          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization  Organization   @relation(fields: [organizationId], references: [id])
+  vehicles      Vehicle[]
+  serviceOrders ServiceOrder[]
+
+  @@index([organizationId])
+  @@schema("tenant")
 }
 
 model Vehicle {
-  id   String @id @default(cuid())
-  size String
+  id             String      @id @default(cuid())
+  organizationId String
+  customerId     String
+  plate          String
+  model          String?
+  brand          String?
+  color          String?
+  size           VehicleSize @default(COMPACT)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  organization  Organization   @relation(fields: [organizationId], references: [id])
+  customer      Customer       @relation(fields: [customerId], references: [id])
+  serviceOrders ServiceOrder[]
+
+  @@index([organizationId])
+  @@index([customerId])
+  @@schema("tenant")
 }
 
-model ServiceOrder {
-  id             String @id @default(cuid())
-  serviceTypeId  String
-  vehicleId      String
-  status         String
+model ServiceType {
+  id             String   @id @default(cuid())
   organizationId String
+  name           String
+  description    String?
+  price          Float
+  workflowId     String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization  Organization          @relation(fields: [organizationId], references: [id])
+  workflow      Workflow?             @relation(fields: [workflowId], references: [id])
+  bundles       ServiceBundle[]
+  items         ServiceOrderItem[]
+  productUsages ServiceProductUsage[]
+
+  @@index([organizationId])
+  @@index([workflowId])
+  @@schema("tenant")
+}
+
+model ServiceBundle {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  price          Float
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization  @relation(fields: [organizationId], references: [id])
+  services     ServiceType[]
+
+  @@index([organizationId])
+  @@schema("tenant")
+}
+
+model ServiceOrderItem {
+  id             String @id @default(cuid())
+  serviceOrderId String
+  serviceTypeId  String
+  price          Float
+  quantity       Int    @default(1)
+
+  serviceOrder ServiceOrder @relation(fields: [serviceOrderId], references: [id], onDelete: Cascade)
+  serviceType  ServiceType  @relation(fields: [serviceTypeId], references: [id])
+
+  @@index([serviceOrderId])
+  @@index([serviceTypeId])
+  @@schema("tenant")
+}
+
+model Workflow {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  steps         WorkflowStep[]
+  transitions   WorkflowTransition[]
+  serviceTypes  ServiceType[]
+  serviceOrders ServiceOrder[]
+
+  @@index([organizationId])
+  @@schema("tenant")
+}
+
+model WorkflowStep {
+  id          String   @id @default(cuid())
+  workflowId  String
+  name        String
+  description String?
+  orderIndex  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workflow Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+
+  fromTransitions WorkflowTransition[] @relation("FromStep")
+  toTransitions   WorkflowTransition[] @relation("ToStep")
+  activeOrders    ServiceOrder[]       @relation("CurrentStep")
+
+  @@index([workflowId])
+  @@schema("tenant")
+}
+
+model WorkflowTransition {
+  id         String @id @default(cuid())
+  workflowId String
+  fromStepId String
+  toStepId   String
+
+  workflow Workflow     @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  fromStep WorkflowStep @relation("FromStep", fields: [fromStepId], references: [id])
+  toStep   WorkflowStep @relation("ToStep", fields: [toStepId], references: [id])
+
+  @@index([workflowId])
+  @@index([fromStepId])
+  @@index([toStepId])
+  @@schema("tenant")
+}
+
+enum ServiceOrderStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+
+  @@schema("tenant")
+}
+
+// -----------------------------------------------------------------------------
+// SMART STOCK DOMAIN
+// -----------------------------------------------------------------------------
+
+enum StockMovementType {
+  IN
+  OUT
+  AUTO_CONSUMPTION
+  ADJUSTMENT
+
+  @@schema("tenant")
 }
 
 model Product {
-  id           String @id @default(cuid())
-  currentStock Float
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  sku            String?
+  unitOfMeasure  String   @default("UN") // e.g., ML, L, G, KG, UN
+  currentStock   Float    @default(0)
+  minimumStock   Float    @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization          @relation(fields: [organizationId], references: [id])
+  usages       ServiceProductUsage[]
+  movements    StockMovement[]
+
+  @@index([organizationId])
+  @@schema("tenant")
 }
 
 model ServiceProductUsage {
-  id                String @id @default(cuid())
+  id                String      @id @default(cuid())
+  organizationId    String
   serviceTypeId     String
   productId         String
-  vehicleSize       String
+  vehicleSize       VehicleSize
   estimatedQuantity Float
-  wasteFactor       Float
+  wasteFactor       Float       @default(1.0)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  serviceType  ServiceType  @relation(fields: [serviceTypeId], references: [id])
+  product      Product      @relation(fields: [productId], references: [id])
+
+  @@index([organizationId])
+  @@index([serviceTypeId])
+  @@index([productId])
+  @@schema("tenant")
 }
 
 model StockMovement {
-  id        String @id @default(cuid())
-  productId String
-  quantity  Float
-  type      String
+  id             String            @id @default(cuid())
+  organizationId String
+  productId      String
+  type           StockMovementType
+  quantity       Float
+  serviceOrderId String?
+  notes          String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  organization Organization  @relation(fields: [organizationId], references: [id])
+  product      Product       @relation(fields: [productId], references: [id])
+  serviceOrder ServiceOrder? @relation(fields: [serviceOrderId], references: [id])
+
+  @@index([organizationId])
+  @@index([productId])
+  @@index([serviceOrderId])
+  @@schema("tenant")
+}
+
+// -----------------------------------------------------------------------------
+// SAAS & SUBSCRIPTION DOMAIN
+// -----------------------------------------------------------------------------
+
+model Plan {
+  id            String   @id @default(cuid())
+  name          String
+  description   String?
+  price         Float
+  currency      String   @default("BRL")
+  interval      String   @default("MONTHLY") // MONTHLY, YEARLY
+  stripePriceId String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  subscriptions Subscription[]
+
+  @@schema("public")
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  organizationId       String             @unique
+  planId               String
+  status               SubscriptionStatus @default(ACTIVE)
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean            @default(false)
+  stripeSubscriptionId String?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  plan         Plan         @relation(fields: [planId], references: [id])
+  invoices     Invoice[]
+
+  @@schema("public")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  TRIALING
+
+  @@schema("public")
+}
+
+model Invoice {
+  id             String        @id @default(cuid())
+  organizationId String
+  subscriptionId String?
+  amount         Float
+  currency       String        @default("BRL")
+  status         InvoiceStatus @default(OPEN)
+  pdfUrl         String?
+  paidAt         DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  organization Organization  @relation(fields: [organizationId], references: [id])
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id])
+
+  @@index([organizationId])
+  @@schema("public")
+}
+
+enum InvoiceStatus {
+  OPEN
+  PAID
+  VOID
+  UNCOLLECTIBLE
+
+  @@schema("public")
+}
+
+// -----------------------------------------------------------------------------
+// FEATURE FLAGS DOMAIN
+// -----------------------------------------------------------------------------
+
+enum FeatureFlagKey {
+  SMART_STOCK
+  ADVANCED_ANALYTICS
+  MULTI_UNIT
+  WHITE_LABEL
+  PUBLIC_API
+  WORKFLOW_ENGINE
+
+  @@schema("public")
+}
+
+model FeatureFlag {
+  id          String         @id @default(cuid())
+  key         FeatureFlagKey @unique
+  name        String
+  description String?
+  isGlobal    Boolean        @default(false)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  organizationFeatures OrganizationFeature[]
+
+  @@schema("public")
+}
+
+model OrganizationFeature {
+  id             String   @id @default(cuid())
+  organizationId String
+  featureId      String
+  enabled        Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  feature      FeatureFlag  @relation(fields: [featureId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, featureId])
+  @@schema("public")
+}
+
+// -----------------------------------------------------------------------------
+// ANALYTICS DOMAIN
+// -----------------------------------------------------------------------------
+
+enum MetricKey {
+  CHEMICAL_COST_PER_SERVICE
+  PROFIT_PER_SERVICE
+  EMPLOYEE_EFFICIENCY_SCORE
+  WASH_BAY_THROUGHPUT
+  AVG_SERVICE_DURATION
+  STOCK_DEPLETION_FORECAST
+  CUSTOMER_RETENTION_INDEX
+
+  @@schema("tenant")
+}
+
+model UsageMetric {
+  id             String    @id @default(cuid())
+  organizationId String
+  unitId         String? // Metrics can be per-organization or per-unit
+  key            MetricKey
+  value          Float
+  measuredAt     DateTime  @default(now())
+  metadata       Json? // store specific dimensions, e.g. { "serviceTypeId": "..." }
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  unit         Unit?        @relation(fields: [unitId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([unitId])
+  @@index([key, measuredAt])
+  @@schema("tenant")
+}
+
+// -----------------------------------------------------------------------------
+// RESELLER & PARTNERSHIP DOMAIN
+// -----------------------------------------------------------------------------
+
+model CommissionPolicy {
+  id             String   @id @default(cuid())
+  resellerId     String
+  name           String
+  commissionRate Float // percentage, e.g. 15.0 for 15%
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  reseller Reseller @relation(fields: [resellerId], references: [id], onDelete: Cascade)
+
+  @@index([resellerId])
+  @@schema("public")
 }
