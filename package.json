@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "next dev apps/web",
     "build": "next build apps/web",
-    "start": "next start apps/web"
+    "start": "next start apps/web",
+    "postinstall": "prisma generate --schema=packages/database/prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "latest",

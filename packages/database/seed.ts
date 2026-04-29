@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "../generated/client";
 
 const prisma = new PrismaClient();
 
@@ -26,7 +26,7 @@ async function main() {
 
   // Workflow 1: Lavagem Completa
   const lavagemSteps = ["PreWash", "SnowFoam", "Rinse", "Dry", "Inspection", "Delivery"];
-  
+
   const lavagemCompleta = await prisma.workflow.create({
     data: {
       organizationId: org.id,
