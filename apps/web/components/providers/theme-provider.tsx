@@ -2,10 +2,16 @@
 
 import * as React from "react"
 
+type ThemeProviderProps = {
+    children: React.ReactNode
+    attribute?: string
+    defaultTheme?: string
+    enableSystem?: boolean
+    disableTransitionOnChange?: boolean
+}
+
 export function ThemeProvider({
     children,
-}: {
-    children: React.ReactNode
-}) {
+}: ThemeProviderProps) {
     return <>{children}</>
 }
