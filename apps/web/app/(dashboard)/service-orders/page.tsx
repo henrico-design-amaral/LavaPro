@@ -1,1 +1,8 @@
-export default function service-ordersPage() { return (<div className="p-6"><h1 className="text-2xl font-bold">service-orders</h1></div>); }
+export default function ServiceOrdersPage() {
+    return (
+        <div>
+            <h1>Service Orders</h1>
+            <p>Página operacional de ordens de serviço.</p>
+        </div>
+    )
+}
