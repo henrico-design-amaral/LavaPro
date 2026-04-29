@@ -1,0 +1,48 @@
+
+generator client {
+ provider = "prisma-client-js"
+}
+
+datasource db {
+ provider = "postgresql"
+ url      = env("DATABASE_URL")
+}
+
+model Organization {
+ id String @id @default(cuid())
+ name String
+}
+
+model Vehicle {
+ id String @id @default(cuid())
+ size String
+}
+
+model ServiceOrder {
+ id String @id @default(cuid())
+ serviceTypeId String
+ vehicleId String
+ status String
+ organizationId String
+}
+
+model Product {
+ id String @id @default(cuid())
+ currentStock Float
+}
+
+model ServiceProductUsage {
+ id String @id @default(cuid())
+ serviceTypeId String
+ productId String
+ vehicleSize String
+ estimatedQuantity Float
+ wasteFactor Float
+}
+
+model StockMovement {
+ id String @id @default(cuid())
+ productId String
+ quantity Float
+ type String
+}

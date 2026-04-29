@@ -1,0 +1,1 @@
+Vertical SaaS para lava-rápidos com SmartStock engine automático.
