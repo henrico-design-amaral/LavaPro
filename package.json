@@ -11,17 +11,18 @@
     "start": "next start apps/web"
   },
   "dependencies": {
+    "@prisma/client": "latest",
+    "lucide-react": "^1.14.0",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest",
-    "@prisma/client": "latest"
+    "react-dom": "latest"
   },
   "devDependencies": {
-    "prisma": "latest",
-    "typescript": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
-    "ts-node": "latest"
+    "prisma": "latest",
+    "ts-node": "latest",
+    "typescript": "latest"
   },
   "prisma": {
     "schema": "packages/database/prisma/schema.prisma",
