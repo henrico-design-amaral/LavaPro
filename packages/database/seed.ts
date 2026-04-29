@@ -1,6 +1,4 @@
-import { PrismaClient } from "./generated/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "./client";
 
 async function main() {
   console.log("Starting LavaPro seed...");

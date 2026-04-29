@@ -1,5 +1,4 @@
-import { PrismaClient, ServiceOrderStatus, StockMovementType, VehicleSize } from "./generated/client";
-
+import { PrismaClient, ServiceOrderStatus, StockMovementType, VehicleSize } from "../generated/client";
 const prismaClientSingleton = () => {
   const basePrisma = new PrismaClient();
 
