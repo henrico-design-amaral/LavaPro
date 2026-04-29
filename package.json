@@ -26,6 +26,6 @@
   },
   "prisma": {
     "schema": "packages/database/prisma/schema.prisma",
-    "seed": "ts-node packages/database/seed.ts"
+    "seed": "ts-node packages/database/prisma/seed.ts"
   }
 }
