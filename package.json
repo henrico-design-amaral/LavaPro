@@ -7,21 +7,21 @@
   ],
   "scripts": {
     "dev": "next dev apps/web",
-    "build": "npm run build:seed && npm run db:generate && next build apps/web",
     "start": "next start apps/web",
     "postinstall": "npm run db:generate",
+    "build": "npm run db:generate && npm run build:seed && next build apps/web",
     "db:generate": "prisma generate --schema=packages/database/prisma/schema.prisma",
     "build:seed": "tsc packages/database/seed.ts --outDir packages/database/dist"
   },
   "dependencies": {
     "@prisma/client": "latest",
+    "@types/node": "latest",
     "lucide-react": "^1.14.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
-    "@types/node": "latest",
     "@types/react": "latest",
     "prisma": "latest",
     "ts-node": "latest",
@@ -29,6 +29,6 @@
   },
   "prisma": {
     "schema": "packages/database/prisma/schema.prisma",
-    "seed": "ts-node packages/database/prisma/seed.ts"
+    "seed": "node packages/database/dist/seed.js"
   }
 }

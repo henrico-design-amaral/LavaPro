@@ -7,6 +7,6 @@ export default defineConfig({
     url: env("DATABASE_URL"),
   },
   migrations: {
-    seed: "node packages/database/seed.ts",
+    seed: "node packages/database/dist/seed.js",
   },
 });
