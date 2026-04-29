@@ -7,9 +7,11 @@
   ],
   "scripts": {
     "dev": "next dev apps/web",
-    "build": "next build apps/web",
+    "build": "npm run build:seed && npm run db:generate && next build apps/web",
     "start": "next start apps/web",
-    "postinstall": "prisma generate --schema=packages/database/prisma/schema.prisma"
+    "postinstall": "npm run db:generate",
+    "db:generate": "prisma generate --schema=packages/database/prisma/schema.prisma",
+    "build:seed": "tsc packages/database/seed.ts --outDir packages/database/dist"
   },
   "dependencies": {
     "@prisma/client": "latest",

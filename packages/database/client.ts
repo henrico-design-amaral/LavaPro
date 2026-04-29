@@ -1,4 +1,4 @@
-import { PrismaClient, ServiceOrderStatus, StockMovementType, VehicleSize } from '@prisma/client';
+import { PrismaClient, ServiceOrderStatus, StockMovementType, VehicleSize } from "./generated/client";
 
 const prismaClientSingleton = () => {
   const basePrisma = new PrismaClient();
@@ -15,7 +15,7 @@ const prismaClientSingleton = () => {
 
           // Trigger: ServiceCompleted -> create StockMovement(type = AUTO_CONSUMPTION)
           if (isCompleting && result.status === ServiceOrderStatus.COMPLETED) {
-            
+
             // 1. Fetch the complete Service Order to get items and vehicle info
             const serviceOrder = await basePrisma.serviceOrder.findUnique({
               where: { id: result.id },
