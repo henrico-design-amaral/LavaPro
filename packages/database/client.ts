@@ -1,4 +1,4 @@
-import { PrismaClient, ServiceOrderStatus, StockMovementType, VehicleSize } from "../generated/client";
+import { PrismaClient, ServiceOrderStatus, StockMovementType, VehicleSize } from "@prisma/client";
 const prismaClientSingleton = () => {
   const basePrisma = new PrismaClient();
 
@@ -6,7 +6,7 @@ const prismaClientSingleton = () => {
   const prisma = basePrisma.$extends({
     query: {
       serviceOrder: {
-        async update({ args, query }) {
+        async update({ args, query }: { args: any; query: any }) {
           const isCompleting = args.data.status === ServiceOrderStatus.COMPLETED;
 
           // Execute the update first
