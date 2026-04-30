@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
-export default async function DashboardPage() {
+export default async function Page() {
   const org = await prisma.organization.findFirst();
   const workflows = await prisma.workflow.count();
   const services = await prisma.serviceType.count();
