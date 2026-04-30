@@ -1,4 +1,8 @@
 {
   "name": "database",
-  "private": true
+  "private": true,
+  "scripts": {
+    "prisma:generate": "prisma generate",
+    "build": "tsc"
+  }
 }

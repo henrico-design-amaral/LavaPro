@@ -6,10 +6,10 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "next dev apps/web",
-    "db:generate": "prisma generate",
-    "build:seed": "tsc --project packages/database/tsconfig.json",
-    "build": "npm run db:generate && npm run build:seed && cd apps/web && next build",
+    "db:generate": "npm --workspace packages/database run prisma:generate",
+    "build:seed": "npm --workspace packages/database run build",
+    "build:web": "cd apps/web && next build",
+    "build": "npm run db:generate && npm run build:seed && npm run build:web",
     "start": "cd apps/web && next start"
   },
   "dependencies": {
@@ -29,7 +29,6 @@
     "typescript": "latest"
   },
   "prisma": {
-    "schema": "packages/database/prisma/schema.prisma",
-    "seed": "node packages/database/dist/seed.js"
+    "schema": "packages/database/prisma/schema.prisma"
   }
 }
