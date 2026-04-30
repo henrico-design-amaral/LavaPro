@@ -9,7 +9,7 @@ export default async function DashboardPage() {
         <div style={{ padding: 24 }}>
             <h1>LavaPro Dashboard</h1>
 
-            <p><strong>Organization:</strong> {org?.name}</p>
+            <p><strong>Organization:</strong> {org?.name ?? "null"}</p>
             <p><strong>Workflows:</strong> {workflows}</p>
             <p><strong>Service Types:</strong> {services}</p>
         </div>
