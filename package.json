@@ -9,7 +9,7 @@
     "dev": "next dev apps/web",
     "build": "npm run db:generate && npm run build:seed && cd apps/web && next build",
     "start": "cd apps/web && next start",
-    "db:generate": "prisma generate --schema=packages/database/prisma/schema.prisma",
+    "db:generate": "prisma generate --schema=./packages/database/prisma/schema.prisma",
     "build:seed": "tsc --project packages/database/tsconfig.json"
   },
   "dependencies": {
