@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  schemas  = ["public", "tenant"] // Support schema-per-tenant isolation later
+  url      = env("DATABASE_URL")
 }
 
 // -----------------------------------------------------------------------------
