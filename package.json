@@ -13,10 +13,12 @@
     "build:seed": "tsc --project packages/database/tsconfig.json"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "latest",
     "@types/node": "latest",
     "lucide-react": "^1.14.0",
     "next": "latest",
+    "pg": "^8.20.0",
     "react": "latest",
     "react-dom": "latest"
   },
