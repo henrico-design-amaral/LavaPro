@@ -1,97 +1,58 @@
-import 'dotenv/config'
-import { prisma } from "./client";
+import "dotenv/config";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Starting LavaPro seed...");
 
-  // 1. Create a root Reseller & Organization
-  const reseller = await prisma.reseller.create({
+  const organization = await prisma.organization.create({
     data: {
-      name: "LavaPro Master Reseller",
+      name: "LavaPro Demo",
+      units: {
+        create: {
+          name: "Unidade Principal"
+        }
+      }
+    },
+    include: {
+      units: true
     }
   });
 
-  const org = await prisma.organization.create({
+  console.log("Organization criada:", organization.id);
+
+  const workflow = await prisma.workflow.create({
     data: {
-      name: "Auto Spa Demo",
-      resellerId: reseller.id,
-      documentNumber: "00.000.000/0001-00",
+      organizationId: organization.id,
+      name: "Lavagem Padrão"
     }
   });
 
-  console.log(`Created Organization: ${org.name}`);
+  console.log("Workflow criado:", workflow.id);
 
-  // 2. Define Workflow Templates
-
-  // Workflow 1: Lavagem Completa
-  const lavagemSteps = ["PreWash", "SnowFoam", "Rinse", "Dry", "Inspection", "Delivery"];
-
-  const lavagemCompleta = await prisma.workflow.create({
+  const serviceType = await prisma.serviceType.create({
     data: {
-      organizationId: org.id,
-      name: "Lavagem Completa",
-      description: "Serviço padrão de lavagem de alta qualidade",
-      steps: {
-        create: lavagemSteps.map((step, index) => ({
-          name: step,
-          orderIndex: index + 1
-        }))
-      }
-    },
-    include: { steps: { orderBy: { orderIndex: 'asc' } } }
+      organizationId: organization.id,
+      name: "Lavagem Simples",
+      price: 50,
+      workflowId: workflow.id
+    }
   });
 
-  // Create transitions for Lavagem Completa
-  for (let i = 0; i < lavagemCompleta.steps.length - 1; i++) {
-    await prisma.workflowTransition.create({
-      data: {
-        workflowId: lavagemCompleta.id,
-        fromStepId: lavagemCompleta.steps[i].id,
-        toStepId: lavagemCompleta.steps[i + 1].id
-      }
-    });
-  }
+  console.log("ServiceType criado:", serviceType.id);
 
-  console.log(`Created Workflow: ${lavagemCompleta.name}`);
-
-  // Workflow 2: Polimento Técnico
-  const polimentoSteps = ["Wash", "ClayBar", "Cut", "Refinement", "Sealant", "Inspection"];
-
-  const polimentoTecnico = await prisma.workflow.create({
-    data: {
-      organizationId: org.id,
-      name: "Polimento Técnico",
-      description: "Restauração profunda de pintura",
-      steps: {
-        create: polimentoSteps.map((step, index) => ({
-          name: step,
-          orderIndex: index + 1
-        }))
-      }
-    },
-    include: { steps: { orderBy: { orderIndex: 'asc' } } }
+  await prisma.featureFlag.createMany({
+    data: [
+      { key: "SMART_STOCK", name: "Smart Stock" },
+      { key: "MULTI_UNIT", name: "Multi Unit" },
+      { key: "WORKFLOW_ENGINE", name: "Workflow Engine" }
+    ],
+    skipDuplicates: true
   });
 
-  // Create transitions for Polimento Técnico
-  for (let i = 0; i < polimentoTecnico.steps.length - 1; i++) {
-    await prisma.workflowTransition.create({
-      data: {
-        workflowId: polimentoTecnico.id,
-        fromStepId: polimentoTecnico.steps[i].id,
-        toStepId: polimentoTecnico.steps[i + 1].id
-      }
-    });
-  }
-
-  console.log(`Created Workflow: ${polimentoTecnico.name}`);
-  console.log("Seed completed successfully!");
+  console.log("FeatureFlags criadas");
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
-    throw e;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  .catch(console.error)
+  .finally(() => prisma.$disconnect());
