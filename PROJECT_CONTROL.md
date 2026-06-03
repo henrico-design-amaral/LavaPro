@@ -1,65 +1,115 @@
-﻿# PROJECT CONTROL â€” [Nome do Projeto]
+﻿# PROJECT_CONTROL — LavaPro
 
-Este arquivo Ã© a fonte mestre de controle administrativo e progresso sequencial do projeto. Ele mapeia marcos, gerencia handoffs de sessÃµes e documenta o log histÃ³rico factual.
+> Fonte mestre de controle do projeto: identidade, decisões, escopo, handoffs e log factual.
 
 ---
 
 ## 1. IDENTIDADE DO PROJETO
 
-- **Nome local**: [Nome do Projeto]
-- **Caminho local**: `C:\Users\henri\Documents\04_PROJETOS_CONTEÃšDO\[PASTA_DO_PROJETO]`
-- **RepositÃ³rio Git**: `https://github.com/henrico-design-amaral/[repositorio]`
-- **Branch Principal**: `main`
+- **Nome local**: LavaPro
+- **Caminho local**: `C:\Users\henri\Documents\04_PROJETOS_CONTEÚDO\01_ACTIVE\LavaPro`
+- **Repositório Git**: ainda não configurado para push remoto (MVP local)
+- **Branch principal**: `main`
+- **Branch de rebuild ativo**: `rebuild/offline-first-mvp`
 
 ---
 
-## 2. FUNÃ‡ÃƒO E ESCOPO
+## 2. FUNÇÃO E ESCOPO
 
-### Objetivo EstratÃ©gico
-[Defina o objetivo estratÃ©gico e a tese de posicionamento do projeto em uma frase.]
+### Objetivo estratégico
+Validar a operação de um lava-rápido pequeno com um produto **offline-first** antes de qualquer decisão de escala cloud.
 
-### Limites de Escopo
-- **CÃ³digo permitido**: Apenas arquivos de produto limpos, semÃ¢nticos, modulares e alinhados com o Design System.
-- **ConteÃºdo privado**: Todo material sensÃ­vel de clientes, bases brutas ou dados de testes devem residir estritamente em uma pasta privada ou ser listados de forma agregada no Git, sem versionar arquivos pesados (regras de Git em `.gitignore`).
-- **ExecuÃ§Ã£o**: A IA propÃµe, documenta e executa escopos pequenos. O tomador de decisÃ£o final Ã© Henrico.
+### Tese
+Validar operação antes de escalar arquitetura.
+
+### Frase-guia
+Pense simples. Faça melhor. Torne-se inevitável.
+
+### Limites de escopo
+
+- **Código permitido**: apenas Next.js + TypeScript + SQLite + Prisma 5 estável + Tailwind 3. Sem cloud, sem auth, sem multi-tenant, sem billing.
+- **Conteúdo privado**: nada de dados de clientes reais em commit. Apenas o seed sintético.
+- **Execução**: a IA propõe, documenta e executa escopos pequenos. O tomador de decisão final é Henrico.
+
+Para detalhes, ver `docs/MVP_SCOPE.md` e `docs/OFFLINE_FIRST_ARCHITECTURE.md`.
 
 ---
 
 ## 3. FLUXO DE TRABALHO E LEITURA
 
-Antes de realizar qualquer mudanÃ§a estrutural ou codificaÃ§Ã£o:
-1. Ler `PROJECT_CONTROL.md` (este arquivo) para entender a Ãºltima sessÃ£o e pendÃªncias.
-2. Ler `AGENTS.md` para as regras de operaÃ§Ã£o dos agentes.
-3. Ler `GEMINI.md` ou `CLAUDE.md` de acordo com a ferramenta de IA ativa.
-4. Consultar a memÃ³ria de decisÃµes persistentes em `ai-memory/`.
+Antes de qualquer mudança:
+
+1. Ler `PROJECT_CONTROL.md` (este arquivo).
+2. Ler `AGENTS.md` para regras dos agentes.
+3. Ler `GEMINI.md` (operacional).
+4. Consultar `ai-memory/`.
 
 ---
 
-## 4. HISTÃ“RICO DE SESSÃ•ES (LOG FACTUAL)
+## 4. HISTÓRICO DE SESSÕES (LOG FACTUAL)
 
-Este diÃ¡rio de bordo Ã© atualizado a cada conclusÃ£o de tarefa relevante, servindo de handoff para a prÃ³xima IA ou desenvolvedor humano.
-
-### [AAAA-MM-DD] â€” InicializaÃ§Ã£o da FundaÃ§Ã£o
+### 2026-06-03 — Inicialização da fundação
 - **Branch**: `main`
-- **Objetivo**: Estruturar e inicializar o repositÃ³rio utilizando o Project Foundation Protocol v1.
-- **AlteraÃ§Ãµes**:
-  - CriaÃ§Ã£o da Ã¡rvore de diretÃ³rios padrÃ£o de governanÃ§a e documentaÃ§Ã£o.
-  - InicializaÃ§Ã£o dos arquivos de controle: `README.md`, `PROJECT_CONTROL.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` e `.gitignore`.
-  - ConfiguraÃ§Ã£o de templates de memÃ³ria limpos em `ai-memory/`.
-- **ValidaÃ§Ãµes**:
-  - Estrutura de pastas validada no ambiente local.
-- **PendÃªncias**:
-  - [ ] Revisar regras de arquitetura inicial.
-  - [ ] Preencher `ai-memory/01-project-context.md` com os objetivos especÃ­ficos do projeto real.
-  - [ ] Estabelecer o Design System inicial.
+- **Escopo**: estruturar o repositório com o Project Foundation Protocol v1.
+- **Resultado**: estrutura de governança criada, sem código de produto.
+
+### 2026-06-03 — Rebuild offline-first MVP (sessão 001)
+- **Branch**: `rebuild/offline-first-mvp`
+- **Escopo**: reconstruir LavaPro como MVP offline-first, conforme brief recebido.
+- **Mudanças**:
+  - Stack: Next.js 14 + TypeScript + SQLite + Prisma 5.22 + Tailwind 3.
+  - Schema Prisma: 9 modelos (Business, Customer, Vehicle, ServiceType, Product, ServiceProductUsage, ServiceOrder, ServiceOrderItem, StockMovement).
+  - Lib: 7 módulos (`db`, `types`, `format`, `datetime`, `inventory`, `queries`, `actions`).
+  - UI: 9 primitives + 2 components de página (app-shell, order-actions).
+  - Páginas: 13 rotas (`/`, `/queue`, `/orders`, `/orders/new`, `/orders/[id]`, `/customers`, `/customers/new`, `/customers/[id]`, `/customers/[id]/vehicles/new`, `/services`, `/inventory`, `/reports`, `/_not-found`).
+  - Seed: 1 business, 8 customers, 10 vehicles, 6 services, 8 products, 12 orders, 34 stock movements.
+  - Skills: 6 skills em `.opencode/skills/`.
+  - Documentação: 6 docs em `docs/`.
+- **Validações executadas**:
+  - `npm install` — ok
+  - `npm run db:push` — ok
+  - `npm run db:seed` — ok
+  - `npm run typecheck` — ok (zero erro)
+  - `npm run lint` — ok (zero warning)
+  - `npm run build` — ok (12 rotas, First Load JS 87–99 kB)
+  - Smoke test em dev em todas as rotas — 200 em todas
+- **Pendências**:
+  - Validar com 1 turno real em lava-rápido (Camada 4 do `docs/VALIDATION_PLAN.md`).
+  - Histórico de movimentações de estoque.
+  - Export CSV do relatório diário.
+  - Atalhos de teclado.
+  - Testes unitários da engine de consumo.
+
+### Reconciliação e encerramento
+
+- `git status -sb` — auditar arquivos modificados.
+- Nenhum arquivo fora de escopo ou dado privado foi modificado.
+- Este arquivo foi atualizado.
+- Commit atômico a ser criado: `feat: rebuild lavapro offline-first mvp`.
 
 ---
 
-## 5. RECONCILIAÃ‡ÃƒO E ENCERRAMENTO DE SESSÃƒO
+## 5. COMO RODAR
 
-Ao finalizar qualquer sessÃ£o de trabalho, o agente ativo deve:
-1. Rodar `git status -sb` para auditar arquivos modificados.
-2. Confirmar que nenhum arquivo fora do escopo ou dados privados foram modificados.
-3. Atualizar este arquivo (`PROJECT_CONTROL.md`) com a data atual, branch ativa, resumo das alteraÃ§Ãµes, validaÃ§Ãµes executadas e prÃ³ximos passos.
-4. Sugerir a mensagem de commit correspondente de forma clara e atÃ´mica.
+```bash
+npm install
+npm run db:push
+npm run db:seed
+npm run dev
+```
 
+App em `http://localhost:3000`.
+
+Para resetar dados:
+
+```bash
+npm run db:reset
+```
+
+Para validar a build de produção:
+
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```

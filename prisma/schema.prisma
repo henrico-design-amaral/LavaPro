@@ -1,0 +1,172 @@
+// LavaPro — Offline-First MVP
+// SQLite + Prisma schema
+// SQLite does not support native enums, so enum-like fields are typed as String
+// and constrained in the application layer via the typed constants in src/lib/types.ts.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Business {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customers       Customer[]
+  serviceTypes    ServiceType[]
+  products        Product[]
+  serviceOrders   ServiceOrder[]
+  stockMovements  StockMovement[]
+}
+
+model Customer {
+  id         String   @id @default(cuid())
+  businessId String
+  name       String
+  phone      String
+  email      String?
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  business       Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  vehicles       Vehicle[]
+  serviceOrders  ServiceOrder[]
+
+  @@index([businessId])
+  @@index([phone])
+}
+
+model Vehicle {
+  id         String   @id @default(cuid())
+  customerId String
+  plate      String
+  brand      String
+  model      String
+  color      String
+  size       String   @default("MEDIUM") // SMALL | MEDIUM | LARGE | EXTRA_LARGE
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  customer       Customer        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  serviceOrders  ServiceOrder[]
+
+  @@index([customerId])
+  @@index([plate])
+}
+
+model ServiceType {
+  id            String   @id @default(cuid())
+  businessId    String
+  name          String
+  description   String?
+  basePrice     Float
+  durationMin   Int
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  business        Business              @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  productUsages   ServiceProductUsage[]
+  orderItems      ServiceOrderItem[]
+
+  @@index([businessId])
+}
+
+model Product {
+  id           String   @id @default(cuid())
+  businessId   String
+  name         String
+  unit         String
+  currentStock Float    @default(0)
+  minStock     Float    @default(0)
+  unitCost     Float    @default(0)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  business       Business              @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  serviceUsages  ServiceProductUsage[]
+  stockMovements StockMovement[]
+
+  @@index([businessId])
+}
+
+model ServiceProductUsage {
+  id            String @id @default(cuid())
+  serviceTypeId String
+  productId     String
+  baseQuantity  Float
+  factorSmall   Float @default(0.85)
+  factorMedium  Float @default(1.0)
+  factorLarge   Float @default(1.25)
+  factorXLarge  Float @default(1.6)
+
+  serviceType ServiceType @relation(fields: [serviceTypeId], references: [id], onDelete: Cascade)
+  product     Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([serviceTypeId, productId])
+  @@index([productId])
+}
+
+model ServiceOrder {
+  id            String      @id @default(cuid())
+  businessId    String
+  customerId    String
+  vehicleId     String
+  status        String      @default("QUEUED") // QUEUED | IN_PROGRESS | COMPLETED | CANCELLED
+  totalPrice    Float       @default(0)
+  totalCost     Float       @default(0)
+  observations  String?
+  queuedAt      DateTime    @default(now())
+  startedAt     DateTime?
+  completedAt   DateTime?
+  cancelledAt   DateTime?
+  updatedAt     DateTime    @updatedAt
+
+  business  Business           @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customer  Customer           @relation(fields: [customerId], references: [id])
+  vehicle   Vehicle            @relation(fields: [vehicleId], references: [id])
+  items     ServiceOrderItem[]
+
+  @@index([businessId, status])
+  @@index([queuedAt])
+}
+
+model ServiceOrderItem {
+  id              String @id @default(cuid())
+  serviceOrderId  String
+  serviceTypeId   String
+  priceAtTime     Float
+  costAtTime      Float
+  quantity        Int   @default(1)
+
+  serviceOrder ServiceOrder @relation(fields: [serviceOrderId], references: [id], onDelete: Cascade)
+  serviceType  ServiceType  @relation(fields: [serviceTypeId], references: [id])
+
+  @@index([serviceOrderId])
+}
+
+model StockMovement {
+  id          String   @id @default(cuid())
+  businessId  String
+  productId   String
+  delta       Float
+  reason      String   // INITIAL | USAGE | PURCHASE | ADJUSTMENT | WASTE
+  reference   String?
+  note        String?
+  createdAt   DateTime @default(now())
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, productId])
+  @@index([createdAt])
+}
