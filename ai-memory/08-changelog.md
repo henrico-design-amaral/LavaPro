@@ -12,3 +12,12 @@
 - Skills locais: 6 em `.opencode/skills/`.
 - Validação: typecheck, lint, build, smoke test em dev — todos OK.
 - Branch: `rebuild/offline-first-mvp`.
+
+## 2026-06-05 — GitHub Pages static validation demo
+
+- Criada camada estatica separada em `docs/site/`.
+- Telas navegaveis: Dashboard, Queue, Orders, New Order preview, Customers, Services, Inventory / SmartStock e Daily Report.
+- Dataset mockado derivado de `prisma/seed.ts`: 1/8/10/6/8/12/34.
+- Workflow `.github/workflows/pages.yml` publica apenas `docs/site` no GitHub Pages.
+- Documentacao `docs/GITHUB_PAGES_DEMO.md` explica a separacao entre demo estatica e MVP funcional local.
+- Arquitetura offline-first local preservada: Prisma, SQLite, server actions e Next runtime continuam no MVP.

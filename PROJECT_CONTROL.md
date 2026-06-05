@@ -87,6 +87,16 @@ Antes de qualquer mudança:
 - Este arquivo foi atualizado.
 - Commit atômico a ser criado: `feat: rebuild lavapro offline-first mvp`.
 
+### 2026-06-05 — Demo estatica GitHub Pages
+- **Branch**: `rebuild/offline-first-mvp`
+- **Escopo**: criar uma camada estatica separada para validacao visual e navegavel no GitHub Pages, sem alterar a arquitetura offline-first local.
+- **Mudancas**:
+  - Site estatico criado em `docs/site/` com HTML, CSS e JavaScript locais.
+  - Demo baseada no seed sintetico: 1 business, 8 customers, 10 vehicles, 6 services, 8 products, 12 orders e 34 stock movements.
+  - Workflow GitHub Actions criado em `.github/workflows/pages.yml` para publicar `docs/site`.
+  - Documentacao criada em `docs/GITHUB_PAGES_DEMO.md`.
+- **Limite preservado**: Prisma, SQLite, server actions e o MVP local nao foram removidos nem substituidos.
+
 ---
 
 ## 5. COMO RODAR
