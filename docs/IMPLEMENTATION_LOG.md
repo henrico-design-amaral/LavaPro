@@ -133,11 +133,40 @@ Reconstruir o LavaPro como MVP offline-first, conforme brief recebido.
 ### Pendências
 
 - [ ] Validar com 1 turno real em um lava-rápido.
-- [ ] Adicionar histórico de movimentações de estoque (tela pedida pelo brief, marcada como "em breve").
 - [ ] Adicionar export CSV do relatório diário.
 - [ ] Adicionar atalhos de teclado (ex.: `i` para iniciar, `c` para concluir).
 - [ ] Adicionar testes unitários da engine de consumo em `src/lib/inventory.ts`.
 
+---
+
+## 2026-06-05 · Sessão 002 — Auditoria de Readiness e Ajuste de Métricas
+
+**Branch**: `rebuild/offline-first-mvp`
+**Executor**: Antigravity
+**Modo**: `/goal` (auditoria de readiness e certificação)
+
+### Escopo
+
+Executar a auditoria de readiness para o primeiro piloto do LavaPro.
+
+### Mudanças
+
+- **Correção de scripts**:
+  - `scripts/pilot-metrics.sql` atualizado para usar os campos corretos da stack SQLite (`totalPrice`, `totalCost`, `priceAtTime`, `costAtTime`, `queuedAt`, `completedAt` e `ServiceType` em vez dos campos antigos `priceCents`/`unitCostCents` e `ServicePlan` do Postgres/cloud-first).
+- **Documentação**:
+  - `docs/PILOT_READINESS_CHECKLIST.md` atualizado com o status da auditoria realizada.
+  - `docs/PILOT_METRICS.md` atualizado com referências corretas aos campos da base de dados relacional.
+
+### Validações executadas
+
+- `npm install` — ok (Client gerado)
+- `npm run db:push` — ok (SQLite em sincronia)
+- `npm run db:seed` — ok (12 ordens, 34 stock movements)
+- `npm run typecheck` — ok (tsc compilado sem erros)
+- `npm run lint` — ok (eslint sem erros/warnings)
+- `npm run build` — ok (build concluída com sucesso)
+
 ### Próximo passo
 
-Executar a Camada 4 do plano de validação (instalar em um lava-rápido real e operar 1 turno). Antes disso, nenhum trabalho de escala deve começar.
+Iniciar os smoke tests locais nas rotas operacionais do servidor de desenvolvimento.
+

@@ -1,15 +1,28 @@
 import { PageHeader } from '@/components/ui/page-header';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { listProducts } from '@/lib/queries';
+import { Table, THead, TBody, TR, TH, TD } from '@/components/ui/table';
+import { listProducts, listRecentStockMovements } from '@/lib/queries';
 import { formatBRL, formatQuantity } from '@/lib/format';
+import { formatDateTime } from '@/lib/datetime';
+import { STOCK_REASON_LABEL, isStockReason } from '@/lib/types';
 import { AdjustStockControl } from './adjust-control';
 
 export const dynamic = 'force-dynamic';
 
+const REASON_TONE: Record<string, 'info' | 'ok' | 'warn' | 'bad' | 'neutral'> = {
+  INITIAL: 'info',
+  USAGE: 'warn',
+  PURCHASE: 'ok',
+  ADJUSTMENT: 'neutral',
+  WASTE: 'bad',
+};
+
 export default async function InventoryPage() {
-  const products = await listProducts();
+  const [products, movements] = await Promise.all([
+    listProducts(),
+    listRecentStockMovements(30),
+  ]);
   const low = products.filter((p) => p.isLow);
   const ok = products.filter((p) => !p.isLow);
 
@@ -73,9 +86,69 @@ export default async function InventoryPage() {
         </ul>
       </Card>
 
-      <div className="text-[11px] text-ink-500">
-        <Button variant="ghost" size="sm" disabled>Histórico de movimentações · em breve</Button>
-      </div>
+      <Card
+        title="Últimas movimentações"
+        subtitle="Cada baixa automática de OS, compra, ajuste ou perda fica registrada aqui"
+        padding="md"
+      >
+        {movements.length === 0 ? (
+          <p className="text-sm text-ink-300">Nenhuma movimentação registrada ainda.</p>
+        ) : (
+          <Table>
+            <THead>
+              <TR>
+                <TH>Quando</TH>
+                <TH>Produto</TH>
+                <TH>Motivo</TH>
+                <TH className="text-right">Delta</TH>
+                <TH>OS / nota</TH>
+              </TR>
+            </THead>
+            <TBody>
+              {movements.map((m) => {
+                const reason = isStockReason(m.reason) ? m.reason : 'ADJUSTMENT';
+                const reasonLabel = STOCK_REASON_LABEL[reason];
+                const tone = REASON_TONE[reason] ?? 'neutral';
+                return (
+                  <TR key={m.id}>
+                    <TD>
+                      <span className="font-mono text-[11px] text-ink-300">{formatDateTime(m.createdAt)}</span>
+                    </TD>
+                    <TD>
+                      <div className="min-w-0">
+                        <p className="truncate text-ink-100">{m.productName}</p>
+                        <p className="font-mono text-[10px] text-ink-500">{m.unit}</p>
+                      </div>
+                    </TD>
+                    <TD>
+                      <Badge tone={tone}>{reasonLabel}</Badge>
+                    </TD>
+                    <TD className="text-right">
+                      <span
+                        className={`num font-semibold ${
+                          m.delta > 0 ? 'text-signal-ok' : m.delta < 0 ? 'text-signal-warn' : 'text-ink-300'
+                        }`}
+                      >
+                        {m.delta > 0 ? '+' : ''}
+                        {formatQuantity(m.delta)} {m.unit}
+                      </span>
+                    </TD>
+                    <TD>
+                      <div className="text-[11px]">
+                        {m.reference && (
+                          <p className="font-mono text-ink-400">OS {m.reference.slice(-6).toUpperCase()}</p>
+                        )}
+                        {m.note && <p className="text-ink-500">{m.note}</p>}
+                        {!m.reference && !m.note && <span className="text-ink-500">—</span>}
+                      </div>
+                    </TD>
+                  </TR>
+                );
+              })}
+            </TBody>
+          </Table>
+        )}
+      </Card>
     </div>
   );
 }

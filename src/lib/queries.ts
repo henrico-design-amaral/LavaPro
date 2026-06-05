@@ -380,5 +380,39 @@ export async function getDailyReport(date: Date = new Date()): Promise<DailyRepo
   };
 }
 
+export interface StockMovementWithProduct {
+  id: string;
+  productId: string;
+  productName: string;
+  unit: string;
+  delta: number;
+  reason: string;
+  reference: string | null;
+  note: string | null;
+  createdAt: Date;
+}
+
+export async function listRecentStockMovements(limit = 30): Promise<StockMovementWithProduct[]> {
+  const business = await getDefaultBusiness();
+  if (!business) return [];
+  const rows = await prisma.stockMovement.findMany({
+    where: { businessId: business.id },
+    orderBy: { createdAt: 'desc' },
+    take: limit,
+    include: { product: { select: { name: true, unit: true } } },
+  });
+  return rows.map((m) => ({
+    id: m.id,
+    productId: m.productId,
+    productName: m.product.name,
+    unit: m.product.unit,
+    delta: m.delta,
+    reason: m.reason,
+    reference: m.reference,
+    note: m.note,
+    createdAt: m.createdAt,
+  }));
+}
+
 export { isVehicleSize as _isVehicleSize };
 export type { VehicleSize };
