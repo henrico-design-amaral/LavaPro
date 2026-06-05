@@ -170,3 +170,21 @@ Executar a auditoria de readiness para o primeiro piloto do LavaPro.
 
 Iniciar os smoke tests locais nas rotas operacionais do servidor de desenvolvimento.
 
+
+## Security audit note — Next.js 14.2.35
+
+The project was updated from Next.js 14.2.18 to 14.2.35, the latest available 14.x version at the time of validation.
+
+Validation after update:
+- npm run db:push: OK
+- npm run db:seed: OK
+- npm run typecheck: OK
+- npm run lint: OK
+- npm run build: OK
+
+`npm audit --omit=dev` still reports vulnerabilities in Next.js/PostCSS and recommends upgrading to Next.js 16.2.7, which is a major/breaking upgrade.
+
+Decision:
+For the offline-first MVP pilot, this risk is accepted temporarily because the application is intended to run locally, without public internet exposure, authentication, cloud deployment, or external multi-user access.
+
+Do not run `npm audit fix --force` before the first pilot. Reassess framework upgrade after field validation.
