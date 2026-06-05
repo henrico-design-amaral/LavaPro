@@ -3,40 +3,42 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>LavaPro — Demo estática para GitHub Pages</title>
+    <title>LavaPro — Demo estática de validação</title>
     <meta
       name="description"
-      content="Demo estática do LavaPro para validação visual e navegável no GitHub Pages."
+      content="Demo estática do LavaPro para validação visual e comercial do MVP offline-first para lava-rápidos e estética automotiva."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260605-polish" />
-    <script defer src="./app.js?v=20260605-polish"></script>
+    <meta name="theme-color" content="#080909" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./app.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Pular para o conteúdo</a>
-    <div class="shell">
-      <aside class="sidebar" aria-label="Navegação principal">
-        <div class="brand">
-          <div class="brand-mark" aria-hidden="true">LP</div>
-          <div>
-            <p class="brand-name">LavaPro</p>
-            <p class="brand-subtitle">Demo estática</p>
-          </div>
-        </div>
 
-        <nav class="nav" aria-label="Telas da demo">
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegação principal">
+        <a class="brand" href="#painel" aria-label="Ir para o painel LavaPro">
+          <span class="brand-mark" aria-hidden="true">LP</span>
+          <span>
+            <strong>LavaPro</strong>
+            <small>Demo estática</small>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Telas da demonstração">
           <a href="#painel" data-view="painel">Painel</a>
           <a href="#fila" data-view="fila">Fila</a>
           <a href="#ordens" data-view="ordens">Ordens de serviço</a>
           <a href="#nova-os" data-view="nova-os">Nova OS</a>
           <a href="#clientes" data-view="clientes">Clientes</a>
-          <a href="#serviços" data-view="serviços">Serviços</a>
+          <a href="#servicos" data-view="servicos">Serviços</a>
           <a href="#estoque" data-view="estoque">Estoque / SmartStock</a>
-          <a href="#relatório" data-view="relatório">Relatório diário</a>
+          <a href="#relatorio" data-view="relatorio">Relatório diário</a>
         </nav>
 
-        <div class="sidebar-panel">
-          <p class="eyebrow">Dados demonstrativos</p>
-          <dl class="mini-stats" aria-label="Resumo dos dados demonstrativos">
+        <section class="seed-panel" aria-labelledby="seed-title">
+          <p class="eyebrow" id="seed-title">Dados demonstrativos</p>
+          <dl class="seed-grid">
             <div><dt>Negócio</dt><dd>1</dd></div>
             <div><dt>Clientes</dt><dd>8</dd></div>
             <div><dt>Veículos</dt><dd>10</dd></div>
@@ -45,38 +47,39 @@
             <div><dt>Ordens</dt><dd>12</dd></div>
             <div><dt>Movimentos</dt><dd>34</dd></div>
           </dl>
-        </div>
+        </section>
       </aside>
 
       <div class="workspace">
         <header class="topbar">
-          <div class="banner" role="note">
-            Demo estática para GitHub Pages. O MVP funcional offline-first roda localmente com SQLite.
+          <div class="notice" role="note">
+            Demo estática para GitHub Pages. O MVP funcional offline-first roda localmente com SQLite, Prisma e dados persistentes.
           </div>
-          <div class="topbar-row">
+          <div class="hero">
             <div>
-              <p class="eyebrow">LavaPro Centro</p>
-              <h1 id="view-title">Painel</h1>
+              <p class="eyebrow">LavaPro Centro · MVP offline-first</p>
+              <h1 id="view-title">Painel operacional</h1>
+              <p class="hero-copy">
+                Um cockpit simples para controlar fila, ordens de serviço, consumo estimado de produtos, estoque e margem diária em lava-rápidos e estética automotiva.
+              </p>
             </div>
-            <div class="topbar-actions" aria-label="Ações demonstrativas">
-              <button class="ghost-button" type="button" data-demo-action="sync">
-                Simular sincronização
-              </button>
+            <div class="hero-actions" aria-label="Ações da demonstração">
+              <button class="secondary-button" type="button" data-demo-action="sync">Simular sincronização</button>
               <a class="primary-button" href="#nova-os">Nova OS</a>
             </div>
           </div>
         </header>
 
-        <main id="main" class="content" tabindex="-1">
-          <noscript>
-            <section class="empty-state">
-              <h2>JavaScript necessário para esta demo estática</h2>
+        <main id="main" class="content" tabindex="-1" aria-live="polite">
+          <section class="view visible">
+            <div class="hero-card">
+              <span class="eyebrow">Validação visual carregando</span>
+              <h2>Preparando a demo do LavaPro</h2>
               <p>
-                A demo usa JavaScript local apenas para trocar telas e calcular totais
-                com dados demonstrativos. Ela não chama backend e não persiste dados.
+                Se esta mensagem permanecer visível, habilite JavaScript. A demo usa apenas JavaScript local para trocar telas e calcular indicadores com dados demonstrativos. Nenhum dado é enviado, gravado ou persistido no GitHub Pages.
               </p>
-            </section>
-          </noscript>
+            </div>
+          </section>
         </main>
       </div>
     </div>
