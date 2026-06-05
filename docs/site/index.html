@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LavaPro Static Validation Demo</title>
+    <meta
+      name="description"
+      content="Static GitHub Pages validation demo for the LavaPro offline-first MVP."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Pular para o conteudo</a>
+    <div class="shell">
+      <aside class="sidebar" aria-label="Navegacao principal">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">LP</div>
+          <div>
+            <p class="brand-name">LavaPro</p>
+            <p class="brand-subtitle">Static validation</p>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Telas da demo">
+          <a href="#dashboard" data-view="dashboard">Dashboard</a>
+          <a href="#queue" data-view="queue">Queue</a>
+          <a href="#orders" data-view="orders">Orders</a>
+          <a href="#new-order" data-view="new-order">New Order preview</a>
+          <a href="#customers" data-view="customers">Customers</a>
+          <a href="#services" data-view="services">Services</a>
+          <a href="#inventory" data-view="inventory">Inventory / SmartStock</a>
+          <a href="#report" data-view="report">Daily Report</a>
+        </nav>
+
+        <div class="sidebar-panel">
+          <p class="eyebrow">Dataset</p>
+          <dl class="mini-stats" aria-label="Resumo do seed demonstrativo">
+            <div><dt>Business</dt><dd>1</dd></div>
+            <div><dt>Customers</dt><dd>8</dd></div>
+            <div><dt>Vehicles</dt><dd>10</dd></div>
+            <div><dt>Orders</dt><dd>12</dd></div>
+          </dl>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <div class="banner" role="note">
+            Static GitHub Pages demo. Functional offline-first MVP runs locally.
+          </div>
+          <div class="topbar-row">
+            <div>
+              <p class="eyebrow">LavaPro Centro</p>
+              <h1 id="view-title">Dashboard</h1>
+            </div>
+            <div class="topbar-actions" aria-label="Acoes demonstrativas">
+              <button class="ghost-button" type="button" data-demo-action="sync">
+                Demo sync
+              </button>
+              <a class="primary-button" href="#new-order">Nova OS</a>
+            </div>
+          </div>
+        </header>
+
+        <main id="main" class="content" tabindex="-1">
+          <noscript>
+            <section class="empty-state">
+              <h2>JavaScript necessario para esta demo estatica</h2>
+              <p>
+                A demo usa JavaScript local apenas para trocar telas e calcular totais
+                com dados mockados. Ela nao chama backend.
+              </p>
+            </section>
+          </noscript>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
