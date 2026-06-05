@@ -13,11 +13,17 @@
 - Validação: typecheck, lint, build, smoke test em dev — todos OK.
 - Branch: `rebuild/offline-first-mvp`.
 
-## 2026-06-05 — GitHub Pages static validation demo
+## 2026-06-05 — Demo estática de validação no GitHub Pages
 
-- Criada camada estatica separada em `docs/site/`.
-- Telas navegaveis: Dashboard, Queue, Orders, New Order preview, Customers, Services, Inventory / SmartStock e Daily Report.
-- Dataset mockado derivado de `prisma/seed.ts`: 1/8/10/6/8/12/34.
+- Criada camada estática separada em `docs/site/`.
+- Telas navegáveis: Painel, Fila, Ordens de serviço, Nova OS, Clientes, Serviços, Estoque / SmartStock e Relatório diário.
+- Dados demonstrativos derivados de `prisma/seed.ts`: 1/8/10/6/8/12/34.
 - Workflow `.github/workflows/pages.yml` publica apenas `docs/site` no GitHub Pages.
-- Documentacao `docs/GITHUB_PAGES_DEMO.md` explica a separacao entre demo estatica e MVP funcional local.
+- Documentação `docs/GITHUB_PAGES_DEMO.md` explica a separação entre demo estática e MVP funcional local.
 - Arquitetura offline-first local preservada: Prisma, SQLite, server actions e Next runtime continuam no MVP.
+
+## 2026-06-05 — Polimento da demo pública
+
+- Demo corrigida na `main` para PT-BR com acentos e sem rótulos mistos em inglês na UI.
+- Primeiro painel fortalecido com hero de validação, contadores visíveis do seed e aviso de não persistência.
+- Workflow de Pages mantido para push na `main`, publicação de `docs/site` e validação de `app.js` com `node --check`.

@@ -3,44 +3,47 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>LavaPro Static Validation Demo</title>
+    <title>LavaPro — Demo estática para GitHub Pages</title>
     <meta
       name="description"
-      content="Static GitHub Pages validation demo for the LavaPro offline-first MVP."
+      content="Demo estática do LavaPro para validação visual e navegável no GitHub Pages."
     />
-    <link rel="stylesheet" href="./styles.css" />
-    <script defer src="./app.js"></script>
+    <link rel="stylesheet" href="./styles.css?v=20260605-polish" />
+    <script defer src="./app.js?v=20260605-polish"></script>
   </head>
   <body>
-    <a class="skip-link" href="#main">Pular para o conteudo</a>
+    <a class="skip-link" href="#main">Pular para o conteúdo</a>
     <div class="shell">
-      <aside class="sidebar" aria-label="Navegacao principal">
+      <aside class="sidebar" aria-label="Navegação principal">
         <div class="brand">
           <div class="brand-mark" aria-hidden="true">LP</div>
           <div>
             <p class="brand-name">LavaPro</p>
-            <p class="brand-subtitle">Static validation</p>
+            <p class="brand-subtitle">Demo estática</p>
           </div>
         </div>
 
         <nav class="nav" aria-label="Telas da demo">
-          <a href="#dashboard" data-view="dashboard">Dashboard</a>
-          <a href="#queue" data-view="queue">Queue</a>
-          <a href="#orders" data-view="orders">Orders</a>
-          <a href="#new-order" data-view="new-order">New Order preview</a>
-          <a href="#customers" data-view="customers">Customers</a>
-          <a href="#services" data-view="services">Services</a>
-          <a href="#inventory" data-view="inventory">Inventory / SmartStock</a>
-          <a href="#report" data-view="report">Daily Report</a>
+          <a href="#painel" data-view="painel">Painel</a>
+          <a href="#fila" data-view="fila">Fila</a>
+          <a href="#ordens" data-view="ordens">Ordens de serviço</a>
+          <a href="#nova-os" data-view="nova-os">Nova OS</a>
+          <a href="#clientes" data-view="clientes">Clientes</a>
+          <a href="#serviços" data-view="serviços">Serviços</a>
+          <a href="#estoque" data-view="estoque">Estoque / SmartStock</a>
+          <a href="#relatório" data-view="relatório">Relatório diário</a>
         </nav>
 
         <div class="sidebar-panel">
-          <p class="eyebrow">Dataset</p>
-          <dl class="mini-stats" aria-label="Resumo do seed demonstrativo">
-            <div><dt>Business</dt><dd>1</dd></div>
-            <div><dt>Customers</dt><dd>8</dd></div>
-            <div><dt>Vehicles</dt><dd>10</dd></div>
-            <div><dt>Orders</dt><dd>12</dd></div>
+          <p class="eyebrow">Dados demonstrativos</p>
+          <dl class="mini-stats" aria-label="Resumo dos dados demonstrativos">
+            <div><dt>Negócio</dt><dd>1</dd></div>
+            <div><dt>Clientes</dt><dd>8</dd></div>
+            <div><dt>Veículos</dt><dd>10</dd></div>
+            <div><dt>Serviços</dt><dd>6</dd></div>
+            <div><dt>Produtos</dt><dd>8</dd></div>
+            <div><dt>Ordens</dt><dd>12</dd></div>
+            <div><dt>Movimentos</dt><dd>34</dd></div>
           </dl>
         </div>
       </aside>
@@ -48,18 +51,18 @@
       <div class="workspace">
         <header class="topbar">
           <div class="banner" role="note">
-            Static GitHub Pages demo. Functional offline-first MVP runs locally.
+            Demo estática para GitHub Pages. O MVP funcional offline-first roda localmente com SQLite.
           </div>
           <div class="topbar-row">
             <div>
               <p class="eyebrow">LavaPro Centro</p>
-              <h1 id="view-title">Dashboard</h1>
+              <h1 id="view-title">Painel</h1>
             </div>
-            <div class="topbar-actions" aria-label="Acoes demonstrativas">
+            <div class="topbar-actions" aria-label="Ações demonstrativas">
               <button class="ghost-button" type="button" data-demo-action="sync">
-                Demo sync
+                Simular sincronização
               </button>
-              <a class="primary-button" href="#new-order">Nova OS</a>
+              <a class="primary-button" href="#nova-os">Nova OS</a>
             </div>
           </div>
         </header>
@@ -67,10 +70,10 @@
         <main id="main" class="content" tabindex="-1">
           <noscript>
             <section class="empty-state">
-              <h2>JavaScript necessario para esta demo estatica</h2>
+              <h2>JavaScript necessário para esta demo estática</h2>
               <p>
                 A demo usa JavaScript local apenas para trocar telas e calcular totais
-                com dados mockados. Ela nao chama backend.
+                com dados demonstrativos. Ela não chama backend e não persiste dados.
               </p>
             </section>
           </noscript>

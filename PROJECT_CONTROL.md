@@ -87,15 +87,25 @@ Antes de qualquer mudança:
 - Este arquivo foi atualizado.
 - Commit atômico a ser criado: `feat: rebuild lavapro offline-first mvp`.
 
-### 2026-06-05 — Demo estatica GitHub Pages
-- **Branch**: `rebuild/offline-first-mvp`
-- **Escopo**: criar uma camada estatica separada para validacao visual e navegavel no GitHub Pages, sem alterar a arquitetura offline-first local.
-- **Mudancas**:
-  - Site estatico criado em `docs/site/` com HTML, CSS e JavaScript locais.
-  - Demo baseada no seed sintetico: 1 business, 8 customers, 10 vehicles, 6 services, 8 products, 12 orders e 34 stock movements.
+### 2026-06-05 — Demo estática GitHub Pages
+- **Branch**: `main`
+- **Escopo**: criar e polir uma camada estática separada para validação visual e navegável no GitHub Pages, sem alterar a arquitetura offline-first local.
+- **Mudanças**:
+  - Site estático criado em `docs/site/` com HTML, CSS e JavaScript locais.
+  - Demo baseada no seed sintético: 1 negócio, 8 clientes, 10 veículos, 6 serviços, 8 produtos, 12 ordens e 34 movimentos de estoque.
   - Workflow GitHub Actions criado em `.github/workflows/pages.yml` para publicar `docs/site`.
-  - Documentacao criada em `docs/GITHUB_PAGES_DEMO.md`.
-- **Limite preservado**: Prisma, SQLite, server actions e o MVP local nao foram removidos nem substituidos.
+  - Documentação criada em `docs/GITHUB_PAGES_DEMO.md`.
+- **Limite preservado**: Prisma, SQLite, server actions e o MVP local não foram removidos nem substituídos.
+
+### 2026-06-05 — Correção da demo pública em Pages
+- **Branch**: `main`
+- **Escopo**: corrigir a demo pública para PT-BR polido, hierarquia visual mais forte e workflow acionado por push na `main`.
+- **Mudanças**:
+  - Hero de validação adicionado ao painel inicial.
+  - Rótulos mistos em inglês removidos da UI estática.
+  - Cópia visível revisada com acentos PT-BR.
+  - Aviso explícito adicionado: nenhum dado é persistido no GitHub Pages.
+  - Workflow mantém validação de existência dos arquivos estáticos e `node --check docs/site/app.js`.
 
 ---
 
