@@ -1,12 +1,12 @@
-name: Deploy static demo to GitHub Pages
+﻿name: Deploy static demo to GitHub Pages
 
 on:
   push:
     branches:
-      - rebuild/offline-first-mvp
+      - main
     paths:
-      - docs/site/**
-      - .github/workflows/pages.yml
+      - "docs/site/**"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: false
 
 jobs:
@@ -23,15 +23,24 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure Pages
+      - name: Validate static demo files
+        run: |
+          test -f docs/site/index.html
+          test -f docs/site/styles.css
+          test -f docs/site/app.js
+          node --check docs/site/app.js
+
+      - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload static site
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/site
