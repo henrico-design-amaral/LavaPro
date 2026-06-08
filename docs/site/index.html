@@ -2,87 +2,133 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>LavaPro — Memorial do MVP offline-first</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>LavaPro — MVP offline-first para lava-rápidos</title>
     <meta
       name="description"
-      content="Memorial do LavaPro: MVP offline-first para controle de fila, ordens de serviço, estoque e margem em lava-rápidos e estética automotiva."
+      content="Memorial e demo estática do LavaPro, um MVP offline-first para fila, ordens de serviço, SmartStock e fechamento diário em lava-rápidos."
     />
-    <meta name="theme-color" content="#080909" />
+    <meta name="theme-color" content="#070807" />
     <link rel="stylesheet" href="./styles.css" />
     <script defer src="./app.js"></script>
   </head>
   <body>
-    <a class="skip-link" href="#main">Pular para o conteúdo</a>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-    <div class="app-shell">
-      <aside class="sidebar" aria-label="Navegação principal">
-        <a class="brand" href="#memorial" aria-label="Ir para o memorial do LavaPro">
-          <span class="brand-mark" aria-hidden="true">LP</span>
-          <span>
-            <strong>LavaPro</strong>
-            <small>Memorial do MVP</small>
-          </span>
-        </a>
+    <header class="site-header" aria-label="Cabeçalho do LavaPro">
+      <a class="brand" href="./" aria-label="LavaPro">
+        <span class="brand-mark" aria-hidden="true">LP</span>
+        <span class="brand-copy">
+          <strong>LavaPro</strong>
+          <small>MVP offline-first</small>
+        </span>
+      </a>
+      <a class="header-action" href="#aplicacao">Entrar na aplicação</a>
+    </header>
 
-        <nav class="nav" aria-label="Telas da demonstração">
-          <a href="#memorial" data-view="memorial">Memorial</a>
-          <a href="#painel" data-view="painel">Painel</a>
-          <a href="#fila" data-view="fila">Fila</a>
-          <a href="#ordens" data-view="ordens">Ordens de serviço</a>
-          <a href="#nova-os" data-view="nova-os">Nova OS</a>
-          <a href="#clientes" data-view="clientes">Clientes</a>
-          <a href="#servicos" data-view="servicos">Serviços</a>
-          <a href="#estoque" data-view="estoque">Estoque / SmartStock</a>
-          <a href="#relatorio" data-view="relatorio">Relatório diário</a>
+    <main id="conteudo">
+      <section class="memorial" id="memorial" aria-labelledby="memorial-title">
+        <div class="memorial-grid">
+          <div class="memorial-copy">
+            <p class="eyebrow">Memorial do produto</p>
+            <h1 id="memorial-title">Uma operação de lava-rápido não deveria depender de memória, caderno e improviso.</h1>
+            <p class="lead">
+              O LavaPro é um MVP offline-first para organizar fila, ordens de serviço, consumo estimado de produtos, estoque e fechamento diário em uma rotina simples o suficiente para ser testada em campo antes de qualquer escala.
+            </p>
+            <div class="hero-actions" aria-label="Ações principais">
+              <a class="primary-button" href="#aplicacao" data-enter-app>Entrar na aplicação</a>
+              <a class="secondary-button" href="#por-que-existe">Entender o produto</a>
+            </div>
+          </div>
+
+          <aside class="phone-preview" aria-label="Prévia mobile do LavaPro">
+            <div class="phone-shell">
+              <div class="phone-status">
+                <span>LavaPro Centro</span>
+                <b>Turno ativo</b>
+              </div>
+              <div class="phone-kpi accent">
+                <small>Receita do dia</small>
+                <strong>R$ 900,00</strong>
+                <span>6 ordens concluídas</span>
+              </div>
+              <div class="phone-list">
+                <div><span>OS-1009</span><b>Na fila</b></div>
+                <div><span>OS-1007</span><b>Em execução</b></div>
+                <div><span>SmartStock</span><b>2 alertas</b></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="why" id="por-que-existe" aria-labelledby="why-title">
+        <div class="section-heading">
+          <p class="eyebrow">Por que existe</p>
+          <h2 id="why-title">O problema não é falta de tecnologia. É falta de uma operação legível.</h2>
+        </div>
+        <div class="reason-grid">
+          <article>
+            <span>01</span>
+            <h3>Fila espalhada</h3>
+            <p>Carros entram por conversa, balcão, WhatsApp ou caderno. O status do turno fica na cabeça da equipe.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Estoque invisível</h3>
+            <p>Produtos são consumidos aos poucos, mas raramente a baixa acompanha o serviço executado.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Fechamento frágil</h3>
+            <p>Receita aparece, mas custo, margem e gargalos ficam difíceis de enxergar no fim do dia.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="principles" aria-labelledby="principles-title">
+        <div>
+          <p class="eyebrow">Princípios do MVP</p>
+          <h2 id="principles-title">Validar rotina antes de vender escala.</h2>
+        </div>
+        <div class="principle-list">
+          <div><b>Offline-first</b><span>Funciona localmente, sem depender de internet durante o turno.</span></div>
+          <div><b>Uma unidade</b><span>Foco em uma operação real antes de multiempresa, billing ou cloud.</span></div>
+          <div><b>SmartStock</b><span>Baixa estimada por serviço para revelar consumo e margem.</span></div>
+          <div><b>Menos painel, mais decisão</b><span>A interface existe para reduzir dúvida operacional.</span></div>
+        </div>
+      </section>
+
+      <section class="app-stage" id="aplicacao" aria-labelledby="app-title">
+        <div class="app-header">
+          <div>
+            <p class="eyebrow">Demo estática · GitHub Pages</p>
+            <h2 id="app-title">Aplicação LavaPro</h2>
+            <p>Esta versão pública não grava dados. A demo abaixo valida fluxo, narrativa e interface. O MVP funcional roda localmente com SQLite e Prisma.</p>
+          </div>
+          <a class="secondary-button hide-mobile" href="#memorial">Voltar ao memorial</a>
+        </div>
+
+        <nav class="app-nav" aria-label="Telas da aplicação">
+          <a href="#painel" data-screen="painel">Painel</a>
+          <a href="#fila" data-screen="fila">Fila</a>
+          <a href="#ordens" data-screen="ordens">Ordens</a>
+          <a href="#nova-os" data-screen="nova-os">Nova OS</a>
+          <a href="#clientes" data-screen="clientes">Clientes</a>
+          <a href="#servicos" data-screen="servicos">Serviços</a>
+          <a href="#estoque" data-screen="estoque">Estoque</a>
+          <a href="#relatorio" data-screen="relatorio">Relatório</a>
         </nav>
 
-        <section class="seed-panel" aria-labelledby="seed-title">
-          <p class="eyebrow" id="seed-title">Dados demonstrativos</p>
-          <dl class="seed-grid">
-            <div><dt>Negócio</dt><dd>1</dd></div>
-            <div><dt>Clientes</dt><dd>8</dd></div>
-            <div><dt>Veículos</dt><dd>10</dd></div>
-            <div><dt>Serviços</dt><dd>6</dd></div>
-            <div><dt>Produtos</dt><dd>8</dd></div>
-            <div><dt>Ordens</dt><dd>12</dd></div>
-            <div><dt>Movimentos</dt><dd>34</dd></div>
-          </dl>
+        <section class="screen-shell" aria-live="polite">
+          <div class="screen-heading">
+            <span id="screen-kicker">Painel operacional</span>
+            <h3 id="screen-title">Painel operacional</h3>
+            <p id="screen-description">Síntese do turno, fila, receita, custo e estoque.</p>
+          </div>
+          <div id="screen-body" class="screen-body"></div>
         </section>
-      </aside>
-
-      <div class="workspace">
-        <header class="topbar">
-          <div class="notice" role="note">
-            Demo estática para GitHub Pages. O MVP funcional offline-first roda localmente com SQLite, Prisma e dados persistentes.
-          </div>
-          <div class="hero">
-            <div>
-              <p class="eyebrow">LavaPro Centro · MVP offline-first</p>
-              <h1 id="view-title">Memorial do produto</h1>
-              <p class="hero-copy">
-                Uma explicação pública do que o LavaPro resolve antes de entrar no cockpit operacional da aplicação.
-              </p>
-            </div>
-            <div class="hero-actions" aria-label="Ações da demonstração">
-              <a class="primary-button" href="#painel">Entrar na aplicação</a>
-              <a class="secondary-button" href="#nova-os">Ver Nova OS</a>
-            </div>
-          </div>
-        </header>
-
-        <main id="main" class="content" tabindex="-1" aria-live="polite">
-          <section class="view visible">
-            <div class="hero-card">
-              <span class="eyebrow">Validação visual carregando</span>
-              <h2>Preparando o memorial do LavaPro</h2>
-              <p>
-                Se esta mensagem permanecer visível, habilite JavaScript. A demo usa apenas JavaScript local para trocar telas e calcular indicadores com dados demonstrativos. Nenhum dado é enviado, gravado ou persistido no GitHub Pages.
-              </p>
-            </div>
-          </section>
-        </main>
-      </div>
-    </div>
+      </section>
+    </main>
   </body>
 </html>
